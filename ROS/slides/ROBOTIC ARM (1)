@@ -1,0 +1,54 @@
+https://github.com/Mecademic/ROS
+
+1.Install dependencies like
+
+sudo apt-get install ros-noetic-moveit-setup-assistant
+sudo apt install ros-noetic-moveit (To install moveit)
+sudo apt-get install ros-noetic-gazebo-ros-control joint-state-publisher
+sudo apt-get install ros-noetic-controller-manager
+sudo apt-get install ros-noetic-ros-controllers
+sudo apt-get install ros-noetic-ros-control
+sudo apt-get install ros-noetic-robot-state-publisher
+
+2. There is a step for adding a "virtual joint". If your robot model exported from solidworks, it will not be having a world joint for showing the relation of robot with world. So in that case please add a virtual joint. The parent frame name can be odom_combined/world. 
+3. If you are having legacyMode error
+legacyModeNS to true
+in URDF
+4. If the model is collapsing due to gravity, quick fix is increase mass of the base -specified in URDF
+Prerequisites
+
+    Configure ROS in an Ubuntu System
+    Install dependencies for arm controllers
+    Generated URDF 
+
+5. If you are trying to edit moveit package and replace the generated URDF again, please me sure that the transmission codes repeated. Remove repeated ones in this case.
+6. If there is some issue on loading(due to inertia), try removing inertia parameters and replace with generated urdf default inertia values- reference - Hand Gesture Control Video
+7. If one particular controller is not loading successfully (there will be error log on gazebo terminal) , open ros_controllers.yaml ... if there is only one joint under a controller, "-" may be missing before the joint name
+
+eg - 
+gripper_controller:
+type:-----
+joints:
+
+    panda_finger_joint
+
+
+try adding "-" before the joint name of it is not there .. issue will be fixed
+
+8. This issue is in ROS Noetic mainly
+When you use Overrite URDF option while generating urdf one syntax will be wrong
+Issue- Error  parse as old deprecated model file failed.
+Error Code 4 Msg: Required attribute filename in element
+is not specified in SDF.
+Error Code 8 Msg: Error reading element plugin
+Error Code 8 Msg: Error reading element model
+Error Code 8 Msg: Error reading element sdf
+Solution- add this line filename="libgazebo_ros_control.so" to         
+plugin name gazebo_ros_control" filename libgazebo_ros_control.so"
+in urdf
+
+
+
+
+roslaunch moveit_setup_assistant setup_assistant.launch
+
